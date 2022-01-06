@@ -28,6 +28,7 @@ public class MessagesFileManager {
         return true;
     }
 
+    //Перенести в креденшелсфайлменеджер
     /**Метод, возвращающий логин отправителя по ip из БД*/
     public static String searchLoginByIp(String ip) {
         FileReader fr = null;

@@ -17,7 +17,9 @@ public class Main {
         //В try заворачивать, только нужное, а не всё
         //перед while стартовать поток "Почтальон" - из сервера доставляет сообщение по адресу (сокет, создаётся строка из файла)
         // Нужен второй класс рядом с mail "PostMan", а здесь PostMan.run()
-        new PostMan();
+        PostMan postThread = new PostMan();
+        new Thread(postThread).start();
+
         while (true) {
             try (ServerSocket serverSocket = new ServerSocket(8000);
                  Socket socket = serverSocket.accept();

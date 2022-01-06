@@ -9,6 +9,7 @@ public class Messages {
         return mfm.createMessage(receiver, message, ip);
     }
 
+    //Переписать, чтобы клиент сразу присылал свой логин, а этот класс удалить
     /**Метод, проверяющий ip и порт в БД для возврата логина*/
     public String loginByIpAndPort(String ip, String port) {
         MessagesFileManager mfm = new MessagesFileManager();
