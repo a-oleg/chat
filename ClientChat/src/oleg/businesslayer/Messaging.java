@@ -12,11 +12,7 @@ public class Messaging {
     public boolean outMessage(String nicknameOfReceiver, String textOfMessage) {
         int clientPort = 8010;
         String userOutMessage = null;
-        try {
-            userOutMessage = "outMessage;" + nicknameOfReceiver + ";" + textOfMessage + ";" + InetAddress.getLocalHost().getHostAddress() + ";" + clientPort + ";";
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        userOutMessage = "outMessage;" + Authentication.nicknameOfSender + ";" + nicknameOfReceiver + ";" + textOfMessage + ";";
         boolean result = false;
         try(Socket socket = new Socket("0.0.0.0", 8000);
             OutputStream os = socket.getOutputStream()) {

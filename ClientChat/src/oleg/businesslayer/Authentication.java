@@ -10,6 +10,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class Authentication {
+    public static String nicknameOfSender = null;
+
     /**Метод, направляющий логин и пароль на сервер для регистрации*/
     public boolean registerNewUser(String userLogin, String userPassword) {
         String userLoginAndPassword = "register;" + userLogin + ";" + userPassword + ";";
@@ -61,6 +63,7 @@ public class Authentication {
             String responseStr = new String(response, StandardCharsets.UTF_8);
             switch (responseStr) {
                 case ("201"): System.out.println("Авторизация завершена успешно");
+                    nicknameOfSender = userLogin;
                     result = true;
                     break;
                 case ("401"): System.out.println("Авторизация не завершена. Произошла ошибка");

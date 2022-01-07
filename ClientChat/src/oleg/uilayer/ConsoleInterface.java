@@ -111,7 +111,7 @@ public class ConsoleInterface {
         return authorizeManager.authorizeUser(login, password);
     }
 
-    /**Метод, отправляющий сообщение на сервер*/
+    /**Метод, отправляющий сообщение пользователя на сервер*/
     boolean messagingDialog() {
         BufferedReader autorisationLoginAndPassword = new BufferedReader(new InputStreamReader(System.in));
         String nicknameOfReceiver = null;
