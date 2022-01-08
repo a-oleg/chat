@@ -20,10 +20,10 @@ public class MessagesFileManager {
         return file;
     }
 
-    /**Метод, записывающий в БД сообщение: отправитель, получатель, текст, признак "Не отправлено"*/
-    public boolean createMessage(String sender, String receiver, String message) {
+    /**Метод, записывающий в БД сообщение: отправитель, получатель, текст, признак отправки*/
+    public boolean createMessage(String sender, String receiver, String message, String attribute) {
         try {
-            Files.writeString(getMessageFileInstance(), sender + ";" + receiver + ";" + message + ";" + "Не отправлено" + ";" + "\n", StandardOpenOption.APPEND);
+            Files.writeString(getMessageFileInstance(), sender + ";" + receiver + ";" + message + ";" + attribute + ";" + "\n", StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -59,24 +59,22 @@ public class MessagesFileManager {
 
     }
 
-    //Дописать метод
+    //Получается, сообщения в БД перемешиваются
     /**Метод, проставляющий признак "Отправлено" у сообщений в БД*/
-    public boolean settingTheAttributeSent(String lineForTheAttributeDelivered) {
+    public boolean settingTheAttributeSent(String lineForTheAttributeSent) {
         ArrayList<String> allLineMessages = getAllMessageFromDataBase();
-        for(String lineMessage : allLineMessages) {
-            if(lineMessage.equals(lineForTheAttributeDelivered)) {
+        if(allLineMessages.contains(lineForTheAttributeSent)) {
+            allLineMessages.remove(lineForTheAttributeSent);
 
-                try {
-                    Files.writeString(getMessageFileInstance(), sender + ";" + receiver + ";" + message + ";" + "Отправлено" + ";" + "\n", StandardOpenOption.APPEND);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
+            String[] newLineForDB = lineForTheAttributeSent.split(";");
+            createMessage(newLineForDB[0], newLineForDB[1], newLineForDB[2], "Отправлено");
+            return true;
+        } else {
+            return false;
         }
     }
 
-    //Перенести в креденшелсфайлменеджер и переписать searchIpbyLogin
+    //Вероятно, не нужный метод
     /**Метод, возвращающий логин отправителя по ip из БД*/
     public String searchLoginByIp(String ip) {
         FileReader fr = null;

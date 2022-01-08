@@ -7,13 +7,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Messages {
     /**Метод, размещающий сообщение пользователя в БД*/
     public boolean saveNewMessage(String sender, String receiver, String message) {
         MessagesFileManager mfm = new MessagesFileManager();
-        return mfm.createMessage(sender, receiver, message);
+        return mfm.createMessage(sender, receiver, message, "Не отправлено");
     }
 
     //Не дописал, не очень понял, что там с портами
