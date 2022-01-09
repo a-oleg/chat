@@ -17,7 +17,7 @@ public class Messages {
 
     //Не дописал, не очень понял, что там с портами
     /**Метод, отправляющий сообщения с сервера получателям*/
-    public boolean sendMessageToTheReciver() {
+    public void sendMessageToTheReciver() {
         Socket socket = null;
         try {
             socket = new Socket("0.0.0.0", 8000);
@@ -32,11 +32,13 @@ public class Messages {
             e.printStackTrace();
         }
 
-        ArrayList<String> messageToSend = chackNewMessage();
-        for(String inputMassage : messageToSend) {
+        ArrayList<String> messagesToSend = checkNewMessages();
+        for(String inputMassage : messagesToSend) {
             String[] lineMessage = inputMassage.split(";");
+            //Формат:
             String lineToSent = lineMessage[0] + ";" + lineMessage[1] + ";" + lineMessage[2] + ";";
             try {
+                //Отправляю не всю строчку, а от кого и тело сообщения
                 os.write(lineToSent.getBytes(Charset.forName("UTF-8")));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -44,12 +46,11 @@ public class Messages {
             MessagesFileManager mfm = new MessagesFileManager();
             mfm.settingTheAttributeSent(inputMassage);
         }
-        return true;
     }
 
     //Нужно переделать к отправке, используя метод sendMessageToTheReciver
     /**Метод, возвращающий List сообщений из БД с признаком "Не отправлено"*/
-    public ArrayList chackNewMessage() {
+    public ArrayList checkNewMessages() {
         MessagesFileManager mfm = new MessagesFileManager();
         ArrayList <String> listAllMesages = mfm.getAllMessageFromDataBase();
         ArrayList<String> listMessagesToSend = new ArrayList<String>();

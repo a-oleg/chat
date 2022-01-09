@@ -74,7 +74,7 @@ public class MessagesFileManager {
         }
     }
 
-    //Вероятно, не нужный метод
+    //Переписать, нужен IP и порт по логину + и использовать при отправке сообщения
     /**Метод, возвращающий логин отправителя по ip из БД*/
     public String searchLoginByIp(String ip) {
         FileReader fr = null;
