@@ -2,11 +2,11 @@ package oleg.businesslayer;
 
 import oleg.datalayer.MessagesFileManager;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Messages {
     /**Метод, размещающий сообщение пользователя в БД*/
@@ -35,10 +35,9 @@ public class Messages {
         ArrayList<String> messagesToSend = checkNewMessages();
         for(String inputMassage : messagesToSend) {
             String[] lineMessage = inputMassage.split(";");
-            //Формат:
-            String lineToSent = lineMessage[0] + ";" + lineMessage[1] + ";" + lineMessage[2] + ";";
+            //Формат lineToSent: 0 - отправитель, 2 - текст
+            String lineToSent = lineMessage[0] + ";" + lineMessage[2] + ";";
             try {
-                //Отправляю не всю строчку, а от кого и тело сообщения
                 os.write(lineToSent.getBytes(Charset.forName("UTF-8")));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,5 +59,31 @@ public class Messages {
             }
         }
         return listMessagesToSend;
+    }
+
+    /**Метод, возвращающий ip и порт отправителя по логину*/
+    public HashMap searchIpAndPortByLogin(String login) {
+        MessagesFileManager mfm = new MessagesFileManager();
+        HashMap<String, Integer> userIpAndPorts = mfm.getUserIpAndPorts();
+        //
+
+        ArrayList<String> credentialsList = new ArrayList<>();
+        String credentialsLine = null;
+        while (true) {
+            try {
+                if (!((credentialsLine = br.readLine()) != null)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            credentialsList.add(credentialsLine);
+        }
+
+        String ip = null;
+        for(String lineInTheDataBase : credentialsList) {
+            if(lineInTheDataBase.contains(login)) {
+                String [] substringLine = lineInTheDataBase.split(";");
+                ip = substringLine[2];
+            }
+        }
     }
 }

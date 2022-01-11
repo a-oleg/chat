@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MessagesFileManager {
     /**Метод, создающий БД-файл с сообщениями*/
@@ -20,7 +21,7 @@ public class MessagesFileManager {
         return file;
     }
 
-    /**Метод, записывающий в БД сообщение: отправитель, получатель, текст, признак отправки*/
+    /**Метод, записывающий в БД сообщение в формате: отправитель, получатель, текст, признак отправки*/
     public boolean createMessage(String sender, String receiver, String message, String attribute) {
         try {
             Files.writeString(getMessageFileInstance(), sender + ";" + receiver + ";" + message + ";" + attribute + ";" + "\n", StandardOpenOption.APPEND);
@@ -74,9 +75,8 @@ public class MessagesFileManager {
         }
     }
 
-    //Переписать, нужен IP и порт по логину + и использовать при отправке сообщения
-    /**Метод, возвращающий логин отправителя по ip из БД*/
-    public String searchLoginByIp(String ip) {
+    /**Метод, возвращающий из БД IP и порт*/
+    public HashMap<String, Integer> getUserIpAndPorts() {
         FileReader fr = null;
         try {
             fr = new FileReader("ClientDataBase.txt");
@@ -85,25 +85,24 @@ public class MessagesFileManager {
         }
         BufferedReader br = new BufferedReader(fr);
 
-        ArrayList<String> credentialsList = new ArrayList<>();
-        String credentialsLine = null;
+        ArrayList<String> credentialsLine = new ArrayList<>();
         while (true) {
+            String line = null;
             try {
-                if (!((credentialsLine = br.readLine()) != null)) break;
+                line = br.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            credentialsList.add(credentialsLine);
-        }
 
-        String login = null;
-        for(String lineInTheDataBase : credentialsList) {
-            if(lineInTheDataBase.contains(ip)) {
-                String [] substringLine = lineInTheDataBase.split(";");
-                login = substringLine[0];
+            if(line != null) {
+                credentialsLine.add(line);
             }
         }
-        return login;
-    }
 
+        HashMap<String, Integer> IpAndPorts = new HashMap<>();
+        for (String line : credentialsLine) {
+            String [] credentials = line.split(";");
+            IpAndPorts.put(credentials[3], Integer.parseInt(credentials[4]));
+        }
+    }
 }
