@@ -48,7 +48,7 @@ public class Messages {
     }
 
     //Нужно переделать к отправке, используя метод sendMessageToTheReciver
-    /**Метод, возвращающий List сообщений из БД с признаком "Не отправлено"*/
+    /**Метод, возвращающий ArrayList сообщений из БД с признаком "Не отправлено"*/
     public ArrayList checkNewMessages() {
         MessagesFileManager mfm = new MessagesFileManager();
         ArrayList <String> listAllMesages = mfm.getAllMessageFromDataBase();
@@ -64,26 +64,7 @@ public class Messages {
     /**Метод, возвращающий ip и порт отправителя по логину*/
     public HashMap searchIpAndPortByLogin(String login) {
         MessagesFileManager mfm = new MessagesFileManager();
-        HashMap<String, Integer> userIpAndPorts = mfm.getUserIpAndPorts();
-        //
-
-        ArrayList<String> credentialsList = new ArrayList<>();
-        String credentialsLine = null;
-        while (true) {
-            try {
-                if (!((credentialsLine = br.readLine()) != null)) break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            credentialsList.add(credentialsLine);
-        }
-
-        String ip = null;
-        for(String lineInTheDataBase : credentialsList) {
-            if(lineInTheDataBase.contains(login)) {
-                String [] substringLine = lineInTheDataBase.split(";");
-                ip = substringLine[2];
-            }
-        }
+        HashMap<String, Integer> userIpAndPorts = mfm.getUserIpAndPorts(login);
+        return userIpAndPorts;
     }
 }
