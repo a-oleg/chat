@@ -47,7 +47,6 @@ public class Messages {
         }
     }
 
-    //Нужно переделать к отправке, используя метод sendMessageToTheReciver
     /**Метод, возвращающий ArrayList сообщений из БД с признаком "Не отправлено"*/
     public ArrayList checkNewMessages() {
         MessagesFileManager mfm = new MessagesFileManager();
@@ -62,9 +61,9 @@ public class Messages {
     }
 
     /**Метод, возвращающий ip и порт отправителя по логину*/
-    public HashMap searchIpAndPortByLogin(String login) {
+    public String searchIpAndPortByLogin(String login) {
         MessagesFileManager mfm = new MessagesFileManager();
-        HashMap<String, Integer> userIpAndPorts = mfm.getUserIpAndPorts(login);
+        String userIpAndPorts = mfm.getUserIpAndPorts(login);
         return userIpAndPorts;
     }
 }

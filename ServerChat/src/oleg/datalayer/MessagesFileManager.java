@@ -76,7 +76,7 @@ public class MessagesFileManager {
     }
 
     /**Метод, возвращающий из БД IP и порт*/
-    public HashMap<String, Integer> getUserIpAndPorts(String login) {
+    public String getUserIpAndPorts(String login) {
         FileReader fr = null;
         try {
             fr = new FileReader("ClientDataBase.txt");
@@ -97,14 +97,14 @@ public class MessagesFileManager {
             if(line != null) {
                 credentialsLine.add(line);
             }
+            
+            String IpAndPorts;
+            for (String lineCredentialsData : credentialsLine) {
+                String [] credentials = lineCredentialsData.split(";");
+                // 3- ip, 4 - port
+                IpAndPorts = credentials[3] + ";" + credentials[4];
+            }
+            return IpAndPorts;
         }
-
-        HashMap<String, Integer> IpAndPorts = new HashMap<>();
-        for (String line : credentialsLine) {
-            String [] credentials = line.split(";");
-            // 3- ip, 4 - port
-            IpAndPorts.put(credentials[3], Integer.parseInt(credentials[4]));
-        }
-        return IpAndPorts;
     }
 }
