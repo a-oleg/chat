@@ -75,8 +75,8 @@ public class MessagesFileManager {
         }
     }
 
-    /**Метод, возвращающий из БД IP и порт*/
-    public String getUserIpAndPorts(String login) {
+    /**Метод, возвращающий из БД IP и порт получателя сообщения по логину*/
+    public String getResiverIpAndPort(String resiverLogin) {
         FileReader fr = null;
         try {
             fr = new FileReader("ClientDataBase.txt");
@@ -85,6 +85,19 @@ public class MessagesFileManager {
         }
         BufferedReader br = new BufferedReader(fr);
 
+        String line = null;
+        while(true){
+            try {
+                if (((line = br.readLine()) == null)) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+        /*
         ArrayList<String> credentialsLine = new ArrayList<>();
         while (true) {
             String line = null;
@@ -101,10 +114,10 @@ public class MessagesFileManager {
             String IpAndPorts;
             for (String lineCredentialsData : credentialsLine) {
                 String [] credentials = lineCredentialsData.split(";");
-                // 3- ip, 4 - port
-                IpAndPorts = credentials[3] + ";" + credentials[4];
+                // credentials[3]- ip, credentials[4] - port
+                IpAndPorts = credentials[3] + ";" + credentials[4] + ";";
             }
             return IpAndPorts;
-        }
+         */
     }
 }

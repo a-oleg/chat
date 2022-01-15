@@ -6,7 +6,6 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Messages {
     /**Метод, размещающий сообщение пользователя в БД*/
@@ -48,7 +47,7 @@ public class Messages {
     }
 
     /**Метод, возвращающий ArrayList сообщений из БД с признаком "Не отправлено"*/
-    public ArrayList checkNewMessages() {
+    public ArrayList<String> checkNewMessages() {
         MessagesFileManager mfm = new MessagesFileManager();
         ArrayList <String> listAllMesages = mfm.getAllMessageFromDataBase();
         ArrayList<String> listMessagesToSend = new ArrayList<String>();
@@ -60,10 +59,18 @@ public class Messages {
         return listMessagesToSend;
     }
 
-    /**Метод, возвращающий ip и порт отправителя по логину*/
-    public String searchIpAndPortByLogin(String login) {
+    /**Метод, возвращающий ArrayList сообщений к отправке с ip и port получателей сообщений*/
+    public ArrayList<String> searchIpAndPort(ArrayList<String> listMessagesToBeSent) {
         MessagesFileManager mfm = new MessagesFileManager();
-        String userIpAndPorts = mfm.getUserIpAndPorts(login);
-        return userIpAndPorts;
+        ArrayList<String> messagesWithTheIpAndPort = new ArrayList<>();
+        for(String messageToBeSent : listMessagesToBeSent) {
+            String [] lineMessageToBeSent = messageToBeSent.split(";");
+            //[1] - логин получателя
+            String ipAndPort = mfm.getResiverIpAndPort(lineMessageToBeSent[1]);
+            String [] arrayResiverIpAndPort = ipAndPort.split(";");
+            //[0] - логин отправителя, [1] - логин получателя, [2] - текст сообщения, [3] - статус, [4] - ip получателя, [5] - порт получателя
+            messagesWithTheIpAndPort.add(lineMessageToBeSent[0] + ";" + lineMessageToBeSent[1] + ";" + lineMessageToBeSent[2] + ";" + lineMessageToBeSent[3] + ";" + arrayResiverIpAndPort[0] + ";" + arrayResiverIpAndPort[1] + ";");
+        }
+        return messagesWithTheIpAndPort;
     }
 }
