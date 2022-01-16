@@ -14,12 +14,11 @@ public class Messages {
         return mfm.createMessage(sender, receiver, message, "Не отправлено");
     }
 
-    //Не дописал, не очень понял, что там с портами
     /**Метод, отправляющий сообщения с сервера получателям*/
-    public void sendMessageToTheReciver() {
+    public void sendMessageToTheReciver(String sender, String message, String ipReciver, int portReciver) {
         Socket socket = null;
         try {
-            socket = new Socket("0.0.0.0", 8000);
+            socket = new Socket(ipReciver, portReciver);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,19 +30,14 @@ public class Messages {
             e.printStackTrace();
         }
 
-        ArrayList<String> messagesToSend = checkNewMessages();
-        for(String inputMassage : messagesToSend) {
-            String[] lineMessage = inputMassage.split(";");
-            //Формат lineToSent: 0 - отправитель, 2 - текст
-            String lineToSent = lineMessage[0] + ";" + lineMessage[2] + ";";
-            try {
-                os.write(lineToSent.getBytes(Charset.forName("UTF-8")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            MessagesFileManager mfm = new MessagesFileManager();
-            mfm.settingTheAttributeSent(inputMassage);
+        String lineToSent = sender + ";" + message + ";";
+        try {
+            os.write(lineToSent.getBytes(Charset.forName("UTF-8")));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        MessagesFileManager mfm = new MessagesFileManager();
+        mfm.settingTheAttributeSent(sender, message);
     }
 
     /**Метод, возвращающий ArrayList сообщений из БД с признаком "Не отправлено"*/

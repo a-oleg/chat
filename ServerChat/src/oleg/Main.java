@@ -2,7 +2,6 @@ package oleg;
 
 import oleg.businesslayer.Authentication;
 import oleg.businesslayer.Messages;
-import oleg.datalayer.MessagesFileManager;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,10 +12,6 @@ import java.nio.charset.StandardCharsets;
 public class Main {
 
     public static void main(String[] args) {
-        //Нужно обрабатывать конкретные exception
-        //В try заворачивать, только нужное, а не всё
-        //перед while стартовать поток "Почтальон" - из сервера доставляет сообщение по адресу (сокет, создаётся строка из файла)
-        // Нужен второй класс рядом с mail "PostMan", а здесь PostMan.run()
         PostMan postThread = new PostMan();
         new Thread(postThread).start();
 

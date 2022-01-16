@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MessagesFileManager {
     /**Метод, создающий БД-файл с сообщениями*/
@@ -57,25 +56,36 @@ public class MessagesFileManager {
             }
         }
         return messagesList;
-
     }
 
-    //Получается, сообщения в БД перемешиваются
     /**Метод, проставляющий признак "Отправлено" у сообщений в БД*/
-    public boolean settingTheAttributeSent(String lineForTheAttributeSent) {
-        ArrayList<String> allLineMessages = getAllMessageFromDataBase();
-        if(allLineMessages.contains(lineForTheAttributeSent)) {
-            allLineMessages.remove(lineForTheAttributeSent);
+    public void settingTheAttributeSent(String sender, String message) {
+        ArrayList<String> listMessagesDownloadedFromTheDataBase = getAllMessageFromDataBase();
+        ArrayList<String> listMessageToWriteToTheDataBase = new ArrayList<>();
+        for (String lineMessage : listMessagesDownloadedFromTheDataBase) {
+            if(lineMessage.contains(message) && lineMessage.contains(sender)) {
+                String [] lineElement = lineMessage.split(";");
+                String newLineMessage = lineElement[0] + ";" + lineElement[1] + lineElement[2] + ";" + "Отправлено" + ";";
+                listMessageToWriteToTheDataBase.add(newLineMessage);
+            } else {
+                listMessageToWriteToTheDataBase.add(lineMessage);
+            }
+        }
 
-            String[] newLineForDB = lineForTheAttributeSent.split(";");
-            createMessage(newLineForDB[0], newLineForDB[1], newLineForDB[2], "Отправлено");
-            return true;
-        } else {
-            return false;
+        Path file = Path.of("MessagesDataBase.txt");
+        try {
+            Files.delete(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for(String line : listMessageToWriteToTheDataBase) {
+            String [] lineToWriteToTheDataBase = line.split(";");
+            createMessage(lineToWriteToTheDataBase[0], lineToWriteToTheDataBase[1], lineToWriteToTheDataBase[2], lineToWriteToTheDataBase[3]);
         }
     }
 
-    /**Метод, возвращающий из БД IP и порт получателя сообщения по логину*/
+    /**Метод, возвращающий IP и порт получателя сообщения по логину из БД*/
     public String getResiverIpAndPort(String resiverLogin) {
         FileReader fr = null;
         try {
@@ -85,39 +95,25 @@ public class MessagesFileManager {
         }
         BufferedReader br = new BufferedReader(fr);
 
-        String line = null;
-        while(true){
+        String ipAndPort = null;
+        String lineInDataBase = null;
+        boolean hasMoreLine = true;
+        while(hasMoreLine){
             try {
-                if (((line = br.readLine()) == null)) break;
+                lineInDataBase = br.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            if(lineInDataBase == null) {
+                hasMoreLine = false;
+            } else {
+                if(lineInDataBase.contains(resiverLogin)) {
+                    String [] credentialsLine = lineInDataBase.split(";");
+                    ipAndPort = credentialsLine[2] + ";" + credentialsLine[3] + ";";
+                    hasMoreLine = false;
+                }
+            }
         }
-
-
-
-        /*
-        ArrayList<String> credentialsLine = new ArrayList<>();
-        while (true) {
-            String line = null;
-            try {
-                line = br.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if(line != null) {
-                credentialsLine.add(line);
-            }
-            
-            String IpAndPorts;
-            for (String lineCredentialsData : credentialsLine) {
-                String [] credentials = lineCredentialsData.split(";");
-                // credentials[3]- ip, credentials[4] - port
-                IpAndPorts = credentials[3] + ";" + credentials[4] + ";";
-            }
-            return IpAndPorts;
-         */
+        return ipAndPort;
     }
 }
