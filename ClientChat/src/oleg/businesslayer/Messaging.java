@@ -2,16 +2,19 @@ package oleg.businesslayer;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Messaging {
     /**Метод, отправляющий на сервер исходящее сообщение пользователя*/
-    public boolean outMessage(String nicknameOfReceiver, String textOfMessage) {
-        int clientPort = 8010;
-        String userOutMessage = null;
+    public boolean outputMessage(String nicknameOfReceiver, String textOfMessage) {
+        String userOutMessage;
         userOutMessage = "outMessage;" + Authentication.nicknameOfSender + ";" + nicknameOfReceiver + ";" + textOfMessage + ";";
         boolean result = false;
         try(Socket socket = new Socket("0.0.0.0", 8000);
@@ -34,5 +37,24 @@ public class Messaging {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**Метод, принимающий с сервера исходящее сообщение иного пользователя*/
+    public boolean inputMessage() {
+        try(ServerSocket serverSocket = new ServerSocket(8000)) {
+            Socket socket = serverSocket.accept();
+            InputStream is = socket.getInputStream();
+            byte[] bytesServerMessage = new byte[255];
+            is.read(bytesServerMessage);
+            String stringMessage = new String(bytesServerMessage, StandardCharsets.UTF_8);
+            String[] stringServerMassage = stringMessage.split(";");
+            // [0] - отправитель, [1] - текст
+            Calendar timeRecive = GregorianCalendar.getInstance();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            System.out.println(dateFormat.format(timeRecive.getTime())+ " Входящее сообщение от " + stringServerMassage[0] + ": " + stringServerMassage[1]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }

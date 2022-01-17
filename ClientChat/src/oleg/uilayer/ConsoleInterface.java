@@ -131,6 +131,6 @@ public class ConsoleInterface {
         }
         isExit(textOfMessage);
         Messaging messageManager = new Messaging();
-        return messageManager.outMessage(nicknameOfReceiver, textOfMessage);
+        return messageManager.outputMessage(nicknameOfReceiver, textOfMessage);
     }
 }
