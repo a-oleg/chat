@@ -55,6 +55,12 @@ public class MessagesFileManager {
                 e.printStackTrace();
             }
         }
+        try {
+            fr.close();
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return messagesList;
     }
 
@@ -65,7 +71,7 @@ public class MessagesFileManager {
         for (String lineMessage : listMessagesDownloadedFromTheDataBase) {
             if(lineMessage.contains(message) && lineMessage.contains(sender)) {
                 String [] lineElement = lineMessage.split(";");
-                String newLineMessage = lineElement[0] + ";" + lineElement[1] + lineElement[2] + ";" + "Отправлено" + ";";
+                String newLineMessage = lineElement[0] + ";" + lineElement[1] + ";" + lineElement[2] + ";" + "Отправлено" + ";";
                 listMessageToWriteToTheDataBase.add(newLineMessage);
             } else {
                 listMessageToWriteToTheDataBase.add(lineMessage);

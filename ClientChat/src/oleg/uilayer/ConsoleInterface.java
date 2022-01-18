@@ -1,5 +1,6 @@
 package oleg.uilayer;
 
+import oleg.ReciverMessage;
 import oleg.businesslayer.Authentication;
 import oleg.businesslayer.Messaging;
 
@@ -36,8 +37,10 @@ public class ConsoleInterface {
                 case ("a"):
                 case ("A"):
                     while (!autorisationDialog()) {
-                        autorisationDialog();
+
                     }
+                    ReciverMessage reciverThread = new ReciverMessage();
+                    new Thread(reciverThread).start();
                     while (!isExit) {
                             messagingDialog();
                         }
@@ -57,7 +60,7 @@ public class ConsoleInterface {
 
     /**Метод, завершающий работу с программой при вводе в консоль слова "Exit"*/
     private boolean isExit(String userMessage) {
-        if(userMessage.equals("Exit") | userMessage.equals("exit")) {
+        if("Exit".equals(userMessage) || "exit".equals(userMessage)) {
             return true;
         } return false;
     }

@@ -41,7 +41,7 @@ public class Messaging {
 
     /**Метод, принимающий с сервера исходящее сообщение иного пользователя*/
     public boolean inputMessage() {
-        try(ServerSocket serverSocket = new ServerSocket(8000)) {
+        try(ServerSocket serverSocket = new ServerSocket(8010)) {
             Socket socket = serverSocket.accept();
             InputStream is = socket.getInputStream();
             byte[] bytesServerMessage = new byte[255];

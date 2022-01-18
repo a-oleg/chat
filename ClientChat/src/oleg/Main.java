@@ -9,8 +9,6 @@ public class Main {
         ConsoleInterface consoleInterface = new ConsoleInterface();
         consoleInterface.entryDialog();
 
-        ReciverMessage reciverThread = new ReciverMessage();
-        new Thread(reciverThread).start();
         //написал метод isExit, но он не работает, в случае, если мы выбрали авторизацию или регистрацию.
         //Видимо, break в 17-й строке завершает только код блока 15-18 строка класса ConsoleInterface,
         // но как расостранить break во вне блока кода не знаю

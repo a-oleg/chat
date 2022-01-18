@@ -17,17 +17,13 @@ public class Messages {
     /**Метод, отправляющий сообщения с сервера получателям*/
     public void sendMessageToTheReciver(String sender, String message, String ipReciver, int portReciver) {
         Socket socket = null;
-        try {
-            socket = new Socket(ipReciver, portReciver);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         OutputStream os = null;
         try {
+            socket = new Socket(ipReciver, portReciver);
             os = socket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
 
         String lineToSent = sender + ";" + message + ";";
