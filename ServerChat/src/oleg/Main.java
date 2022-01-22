@@ -27,6 +27,7 @@ public class Main {
                     switch (stringClientMassage[0]) {
                         case ("register"):
                             Authentication registerManager = new Authentication();
+                            //registerNewUser должен передать usera, а не
                             if (registerManager.registerNewUser(stringClientMassage[1], stringClientMassage[2])) {
                                 os.write("200".getBytes(StandardCharsets.UTF_8));
                                 os.flush();
