@@ -1,5 +1,7 @@
 package oleg.datalayer;
 
+import oleg.models.User;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,12 +20,12 @@ public class CredentialsFileManager {
     }
 
     /**Метод, записывающий в БД логин и пароль*/
-    public boolean createNewUser(String login, String password) {
-        if(getPasswordByLogin(login) != null) {
+    public boolean createNewUser(User user) {
+        if(getPasswordByLogin(user.getLogin()) != null) {
             return false;
         }
         try {
-            Files.writeString(getCredentialsFileInstance(), login + ";" + password + "\n", StandardOpenOption.APPEND);
+            Files.writeString(getCredentialsFileInstance(), user.getLogin() + ";" + user.getPassword() + "\n", StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

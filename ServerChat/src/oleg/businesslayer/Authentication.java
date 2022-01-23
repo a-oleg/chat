@@ -1,12 +1,13 @@
 package oleg.businesslayer;
 
 import oleg.datalayer.CredentialsFileManager;
+import oleg.models.User;
 
 public class Authentication {
     /**Метод, использующийся для занесения логина и пароля пользователя в БД*/
-    public boolean registerNewUser(String login, String password) {
+    public boolean registerNewUser(User newUser) {
         CredentialsFileManager cfm = new CredentialsFileManager();
-        return cfm.createNewUser(login, password);
+        return cfm.createNewUser(newUser);
     }
 
     /**Метод, проверяющий наличие логина и пароля в БД*/

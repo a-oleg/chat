@@ -2,6 +2,7 @@ package oleg;
 
 import oleg.businesslayer.Authentication;
 import oleg.businesslayer.Messages;
+import oleg.models.User;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,12 +24,12 @@ public class Main {
                     byte[] bytesClintMessage = new byte[255];
                     is.read(bytesClintMessage);
                     String stringMessage = new String(bytesClintMessage, StandardCharsets.UTF_8);
-                    String[] stringClientMassage = stringMessage.split(";");
-                    switch (stringClientMassage[0]) {
+                    String[] clientMassage = stringMessage.split(";");
+                    switch (clientMassage[0]) {
                         case ("register"):
+                            User newUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], clientMassage[4]);
                             Authentication registerManager = new Authentication();
-                            //registerNewUser должен передать usera, а не
-                            if (registerManager.registerNewUser(stringClientMassage[1], stringClientMassage[2])) {
+                            if (registerManager.registerNewUser(newUser) {
                                 os.write("200".getBytes(StandardCharsets.UTF_8));
                                 os.flush();
                             } else {
@@ -37,8 +38,9 @@ public class Main {
                             }
                             break;
                         case ("autorisation"):
+                            User notAnAuthorizedUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], clientMassage[4]);
                             Authentication autorisationManager = new Authentication();
-                            if (autorisationManager.authorizeUser(stringClientMassage[1], stringClientMassage[2], stringClientMassage[3], stringClientMassage[4])) {
+                            if (autorisationManager.authorizeUser(notAnAuthorizedUser) {
                                 os.write("201".getBytes());
                                 os.flush();
                             } else {
@@ -48,7 +50,7 @@ public class Main {
                             break;
                         case("outMessage"):
                             Messages saveMassageManager = new Messages();
-                            if(saveMassageManager.saveNewMessage(stringClientMassage[1], stringClientMassage[2], stringClientMassage[3])) {
+                            if(saveMassageManager.saveNewMessage(clientMassage[1], clientMassage[2], clientMassage[3])) {
                                 os.write("202".getBytes());
                                 os.flush();
                             } else {
