@@ -11,13 +11,13 @@ public class Authentication {
     }
 
     /**Метод, проверяющий наличие логина и пароля в БД*/
-    public boolean authorizeUser(String login, String password, String ip, String port) {
+    public boolean authorizeUser(User notAnAuthorizedUser) {
         CredentialsFileManager cfm = new CredentialsFileManager();
-        String passwordByLogin = cfm.getPasswordByLogin(login);
+        String passwordByLogin = cfm.getPasswordByLogin(notAnAuthorizedUser.getLogin());
         if(passwordByLogin == null) {
             return false;
-        } else if(passwordByLogin.equals(password)) {
-            cfm.updateAdress(login, ip, port);
+        } else if(passwordByLogin.equals(notAnAuthorizedUser.getPassword())) {
+            cfm.updateIpAndPortInDataBase(notAnAuthorizedUser.getLogin(), notAnAuthorizedUser.getIp(), notAnAuthorizedUser.getPort());
             return true;
         } else
             return false;

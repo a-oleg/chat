@@ -1,6 +1,7 @@
 package oleg.businesslayer;
 
 import oleg.datalayer.MessagesFileManager;
+import oleg.models.Message;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,9 +10,9 @@ import java.util.ArrayList;
 
 public class Messages {
     /**Метод, размещающий сообщение пользователя в БД*/
-    public boolean saveNewMessage(String sender, String receiver, String message) {
+    public boolean saveNewMessage(Message incomingMessage) {
         MessagesFileManager mfm = new MessagesFileManager();
-        return mfm.createMessage(sender, receiver, message, "Не отправлено");
+        return mfm.createMessage(incomingMessage.getSender(), incomingMessage.getReciver(), incomingMessage.getText(), incomingMessage.getStatus());
     }
 
     /**Метод, отправляющий сообщения с сервера получателям*/
@@ -37,12 +38,12 @@ public class Messages {
     }
 
     /**Метод, возвращающий ArrayList сообщений из БД с признаком "Не отправлено"*/
-    public ArrayList<String> checkNewMessages() {
+    public ArrayList<Message> checkNewMessages() {
         MessagesFileManager mfm = new MessagesFileManager();
-        ArrayList <String> listAllMesages = mfm.getAllMessageFromDataBase();
-        ArrayList<String> listMessagesToSend = new ArrayList<String>();
-        for(String messageLineToSend : listAllMesages) {
-            if(messageLineToSend.contains("Не отправлено")) {
+        ArrayList <Message> listAllMesages = mfm.getAllMessageFromDataBase();
+        ArrayList<Message> listMessagesToSend = new ArrayList<>();
+        for(Message messageLineToSend : listAllMesages) {
+            if(messageLineToSend.getStatus().equals("Не отправлено")) {
                 listMessagesToSend.add(messageLineToSend);
             }
         }
@@ -50,10 +51,10 @@ public class Messages {
     }
 
     /**Метод, возвращающий ArrayList сообщений к отправке с ip и port получателей сообщений*/
-    public ArrayList<String> searchIpAndPort(ArrayList<String> listMessagesToBeSent) {
+    public ArrayList<Message> searchIpAndPort(ArrayList<Message> listMessagesToBeSent) {
         MessagesFileManager mfm = new MessagesFileManager();
         ArrayList<String> messagesWithTheIpAndPort = new ArrayList<>();
-        for(String messageToBeSent : listMessagesToBeSent) {
+        for(Message messageToBeSent : listMessagesToBeSent) {
             String [] lineMessageToBeSent = messageToBeSent.split(";");
             //[1] - логин получателя
             String ipAndPort = mfm.getResiverIpAndPort(lineMessageToBeSent[1]);

@@ -2,6 +2,7 @@ package oleg;
 
 import oleg.businesslayer.Authentication;
 import oleg.businesslayer.Messages;
+import oleg.models.Message;
 import oleg.models.User;
 
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class Main {
                         case ("register"):
                             User newUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], clientMassage[4]);
                             Authentication registerManager = new Authentication();
-                            if (registerManager.registerNewUser(newUser) {
+                            if (registerManager.registerNewUser(newUser)) {
                                 os.write("200".getBytes(StandardCharsets.UTF_8));
                                 os.flush();
                             } else {
@@ -40,7 +41,7 @@ public class Main {
                         case ("autorisation"):
                             User notAnAuthorizedUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], clientMassage[4]);
                             Authentication autorisationManager = new Authentication();
-                            if (autorisationManager.authorizeUser(notAnAuthorizedUser) {
+                            if (autorisationManager.authorizeUser(notAnAuthorizedUser)) {
                                 os.write("201".getBytes());
                                 os.flush();
                             } else {
@@ -49,8 +50,9 @@ public class Main {
                             }
                             break;
                         case("outMessage"):
+                            Message incomingMessage = new Message(clientMassage[1], clientMassage[2], clientMassage[3], "Не отправлено");
                             Messages saveMassageManager = new Messages();
-                            if(saveMassageManager.saveNewMessage(clientMassage[1], clientMassage[2], clientMassage[3])) {
+                            if(saveMassageManager.saveNewMessage(incomingMessage)) {
                                 os.write("202".getBytes());
                                 os.flush();
                             } else {

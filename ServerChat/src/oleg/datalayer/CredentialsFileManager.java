@@ -55,7 +55,7 @@ public class CredentialsFileManager {
     }
 
     /**Метод, добавляющий в БД ip и порт пользователя*/
-    public boolean updateAdress (String login, String ip, String port) {
+    public boolean updateIpAndPortInDataBase(String login, String ip, int port) {
         Path file = Path.of("ClientDataBase.txt");
         try {
             List<String> listCredentials = Files.readAllLines(file);

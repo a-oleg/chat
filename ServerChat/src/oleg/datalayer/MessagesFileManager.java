@@ -1,5 +1,7 @@
 package oleg.datalayer;
 
+import oleg.models.Message;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +34,7 @@ public class MessagesFileManager {
     }
 
     /**Метод, возвращающий List всех сообщений из БД*/
-    public ArrayList getAllMessageFromDataBase() {
+    public ArrayList<Message> getAllMessageFromDataBase() {
         FileReader fr = null;
         try {
             fr = new FileReader("MessagesDataBase.txt");
@@ -41,13 +43,15 @@ public class MessagesFileManager {
         }
         BufferedReader br = new BufferedReader(fr);
 
-        ArrayList<String> messagesList = new ArrayList<>();
+        ArrayList<Message> messagesList = new ArrayList<>();
         boolean hasMoreLine = true;
         String messageLine;
         while (hasMoreLine) {
             try {
                 if (((messageLine = br.readLine()) != null)) {
-                    messagesList.add(messageLine);
+                    String [] messageData = messageLine.split(";");
+                    Message message = new Message(messageData[0], messageData[1], messageData[2], messageData[3]);
+                    messagesList.add(message);
                 } else {
                     hasMoreLine = false;
                 }
