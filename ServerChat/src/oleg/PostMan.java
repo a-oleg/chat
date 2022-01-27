@@ -2,6 +2,7 @@ package oleg;
 
 import oleg.businesslayer.Messages;
 import oleg.models.Message;
+import oleg.models.User;
 
 import java.util.ArrayList;
 
@@ -15,10 +16,8 @@ public class PostMan implements Runnable {
             ArrayList<Message> listNewMessages = messagesManager.checkNewMessages();
             if(listNewMessages.size() != 0) {
                 ArrayList<Message> listMessagesToBeSent = messagesManager.searchIpAndPort(listNewMessages);
-                for(Message reciverData : listMessagesToBeSent) {
-                    //String [] credentials = reciverData.split(";");
-                    // [0] - получатель, [2] - отправитель, [4] - ip получателя, [5] - порт получателя
-                    messagesManager.sendMessageToTheReciver(credentials[0], credentials[2], credentials[4], Integer.parseInt(credentials[5]));
+                for(Message message : listMessagesToBeSent) {
+                    messagesManager.sendMessageToTheReciver(message);
                 }
             }
             try {

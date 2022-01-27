@@ -23,9 +23,9 @@ public class MessagesFileManager {
     }
 
     /**Метод, записывающий в БД сообщение в формате: отправитель, получатель, текст, признак отправки*/
-    public boolean createMessage(String sender, String receiver, String message, String attribute) {
+    public boolean createMessage(Message message) {
         try {
-            Files.writeString(getMessageFileInstance(), sender + ";" + receiver + ";" + message + ";" + attribute + ";" + "\n", StandardOpenOption.APPEND);
+            Files.writeString(getMessageFileInstance(), message.getSender() + ";" + message.getReciver() + ";" + message.getText() + ";" + message.getStatus() + ";" + "\n", StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -33,8 +33,8 @@ public class MessagesFileManager {
         return true;
     }
 
-    /**Метод, возвращающий List всех сообщений из БД*/
-    public ArrayList<Message> getAllMessageFromDataBase() {
+    /**Метод, возвращающий ArrayList всех сообщений из БД*/
+    public ArrayList<Message> getAllMessagesFromDataBase() {
         FileReader fr = null;
         try {
             fr = new FileReader("MessagesDataBase.txt");
@@ -69,16 +69,12 @@ public class MessagesFileManager {
     }
 
     /**Метод, проставляющий признак "Отправлено" у сообщений в БД*/
-    public void settingTheAttributeSent(String sender, String message) {
-        ArrayList<String> listMessagesDownloadedFromTheDataBase = getAllMessageFromDataBase();
-        ArrayList<String> listMessageToWriteToTheDataBase = new ArrayList<>();
-        for (String lineMessage : listMessagesDownloadedFromTheDataBase) {
-            if(lineMessage.contains(message) && lineMessage.contains(sender)) {
-                String [] lineElement = lineMessage.split(";");
-                String newLineMessage = lineElement[0] + ";" + lineElement[1] + ";" + lineElement[2] + ";" + "Отправлено" + ";";
-                listMessageToWriteToTheDataBase.add(newLineMessage);
-            } else {
-                listMessageToWriteToTheDataBase.add(lineMessage);
+    public void settingTheAttributeSent(Message sentMessage) {
+        ArrayList<Message> messagesFromDataBase = getAllMessagesFromDataBase();
+        ArrayList<Message> listMessagesToWriteToTheDataBase = new ArrayList<>();
+        for (Message message : messagesFromDataBase) {
+            if(message.equals(sentMessage)) {
+                sentMessage.setStatus("Отправлено");
             }
         }
 
@@ -89,14 +85,13 @@ public class MessagesFileManager {
             e.printStackTrace();
         }
 
-        for(String line : listMessageToWriteToTheDataBase) {
-            String [] lineToWriteToTheDataBase = line.split(";");
-            createMessage(lineToWriteToTheDataBase[0], lineToWriteToTheDataBase[1], lineToWriteToTheDataBase[2], lineToWriteToTheDataBase[3]);
+        for(Message message : listMessagesToWriteToTheDataBase) {
+            createMessage(message);
         }
     }
 
     /**Метод, возвращающий IP и порт получателя сообщения по логину из БД*/
-    public String getResiverIpAndPort(String resiverLogin) {
+    public String getResiverIpAndPort(Message message) {
         FileReader fr = null;
         try {
             fr = new FileReader("ClientDataBase.txt");
