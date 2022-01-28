@@ -13,7 +13,7 @@ public class Authentication {
     /**Метод, проверяющий наличие логина и пароля в БД*/
     public boolean authorizeUser(User notAnAuthorizedUser) {
         CredentialsFileManager cfm = new CredentialsFileManager();
-        String passwordByLogin = cfm.getPasswordByLogin(notAnAuthorizedUser.getLogin());
+        String passwordByLogin = cfm.getPasswordByLogin(notAnAuthorizedUser);
         if(passwordByLogin == null) {
             return false;
         } else if(passwordByLogin.equals(notAnAuthorizedUser.getPassword())) {

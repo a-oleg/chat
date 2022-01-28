@@ -112,7 +112,7 @@ public class MessagesFileManager {
             if(lineInDataBase == null) {
                 hasMoreLine = false;
             } else {
-                if(lineInDataBase.contains(resiverLogin)) {
+                if(lineInDataBase.contains(message.getReciver())) {
                     String [] credentialsLine = lineInDataBase.split(";");
                     ipAndPort = credentialsLine[2] + ";" + credentialsLine[3] + ";";
                     hasMoreLine = false;

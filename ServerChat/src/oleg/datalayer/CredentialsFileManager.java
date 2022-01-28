@@ -21,7 +21,7 @@ public class CredentialsFileManager {
 
     /**Метод, записывающий в БД логин и пароль*/
     public boolean createNewUser(User user) {
-        if(getPasswordByLogin(user.getLogin()) != null) {
+        if(getPasswordByLogin(user) != null) {
             return false;
         }
         try {
@@ -34,8 +34,8 @@ public class CredentialsFileManager {
     }
 
     /**Метод, возвращающий пароль из БД*/
-    public String getPasswordByLogin(String login) {
-        if(login == null) {
+    public String getPasswordByLogin(User user) {
+        if(user.getLogin() == null) {
             return null;
         }
         Path path = Path.of("ClientDataBase.txt");
@@ -43,7 +43,7 @@ public class CredentialsFileManager {
             List<String> arrayCredentials = Files.readAllLines(path);
             for(String s : arrayCredentials) {
                 String [] credentials = s.split(";");
-                if(login.equals(credentials[0])) {
+                if(user.getLogin().equals(credentials[0])) {
                     return credentials[1];
                 }
             }
