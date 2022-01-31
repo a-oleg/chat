@@ -1,11 +1,11 @@
 package oleg.models;
 
 public class User {
-    public User(String login, String password, String ip, String port) {
+    public User(String login, String password, String ip, int port) {
         this.login = login;
         this.password = password;
         this.ip = ip;
-        this.port = Integer.parseInt(port);
+        this.port = port;
     }
 
     public String getLogin() {

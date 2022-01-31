@@ -13,6 +13,9 @@ public class Message {
     private String text;
     private String status;
 
+    private String ipReciver;
+    private int portReciver;
+
     public String getSender() {
         return sender;
     }
@@ -45,4 +48,11 @@ public class Message {
         this.status = status;
     }
 
+    public String getIpReciver() {return ipReciver;}
+
+    public void setIpReciver(String ipReciver) {this.ipReciver = ipReciver;}
+
+    public int getPortReciver() {return portReciver;}
+
+    public void setPortReciver(int portReciver) {this.portReciver = portReciver;}
 }

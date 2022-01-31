@@ -28,7 +28,7 @@ public class Main {
                     String[] clientMassage = stringMessage.split(";");
                     switch (clientMassage[0]) {
                         case ("register"):
-                            User newUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], clientMassage[4]);
+                            User newUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], Integer.parseInt(clientMassage[4]));
                             Authentication registerManager = new Authentication();
                             if (registerManager.registerNewUser(newUser)) {
                                 os.write("200".getBytes(StandardCharsets.UTF_8));
@@ -39,7 +39,7 @@ public class Main {
                             }
                             break;
                         case ("autorisation"):
-                            User notAnAuthorizedUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], clientMassage[4]);
+                            User notAnAuthorizedUser = new User(clientMassage[1], clientMassage[2], clientMassage[3], 8000);
                             Authentication autorisationManager = new Authentication();
                             if (autorisationManager.authorizeUser(notAnAuthorizedUser)) {
                                 os.write("201".getBytes());

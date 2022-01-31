@@ -14,7 +14,13 @@ public class Authentication {
 
     /**Метод, направляющий логин и пароль на сервер для регистрации*/
     public boolean registerNewUser(String userLogin, String userPassword) {
-        String userLoginAndPassword = "register;" + userLogin + ";" + userPassword + ";";
+        int clientPort = 8010;
+        String userLoginAndPassword = null;
+        try {
+            userLoginAndPassword = "register;" + userLogin + ";" + userPassword + ";" + InetAddress.getLocalHost().getHostAddress() + ";" + clientPort + ";";
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         boolean result = false;
         try (Socket socket = new Socket("0.0.0.0", 8000);

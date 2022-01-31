@@ -21,7 +21,7 @@ public class Messages {
         Socket socket = null;
         OutputStream os = null;
         try {
-            socket = new Socket(reciver.getIp(), reciver.getPort());
+            socket = new Socket(message.getIpReciver(), message.getPortReciver());
             os = socket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,22 +51,14 @@ public class Messages {
         return listMessagesToSend;
     }
 
-    /**Метод, возвращающий ArrayList сообщений к отправке с ip и port получателей сообщений*/
-    public ArrayList<Message> searchIpAndPort(ArrayList<Message> listMessagesToBeSent) {
+    /**Метод, добавляющий сообщениям к отправке с ip и port получателей сообщений*/
+    public void searchIpAndPort(ArrayList<Message> listMessagesToBeSent) {
         MessagesFileManager mfm = new MessagesFileManager();
-        ArrayList<Message> messagesWithTheIpAndPort = new ArrayList<>();
         for(Message messageToBeSent : listMessagesToBeSent) {
-
+            String ipAndPort = mfm.getResiverIpAndPort(messageToBeSent);
+            String [] ipPort = ipAndPort.split(";");
+            messageToBeSent.setIpReciver(ipPort[0]);
+            messageToBeSent.setPortReciver(Integer.parseInt(ipPort[1]));
         }
-        //ArrayList<Message> messagesWithTheIpAndPort = new ArrayList<>();
-        //for(Message messageToBeSent : listMessagesToBeSent) {
-            //String [] lineMessageToBeSent = messageToBeSent.split(";");
-            //[1] - логин получателя
-            String ipAndPort = mfm.getResiverIpAndPort(messageToBeSent.getReciver());
-            //String [] arrayResiverIpAndPort = ipAndPort.split(";");
-            //[0] - логин отправителя, [1] - логин получателя, [2] - текст сообщения, [3] - статус, [4] - ip получателя, [5] - порт получателя
-            //messagesWithTheIpAndPort.add(lineMessageToBeSent[0] + ";" + lineMessageToBeSent[1] + ";" + lineMessageToBeSent[2] + ";" + lineMessageToBeSent[3] + ";" + arrayResiverIpAndPort[0] + ";" + arrayResiverIpAndPort[1] + ";");
-            //}
-        return messagesWithTheIpAndPort;
     }
 }
