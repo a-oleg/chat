@@ -1,6 +1,12 @@
 package oleg.models;
 
 public class User {
+    public static User lineToNewObjectUser(String line) {
+        String[] arrayUserData = line.split(";");
+        User user = new User(arrayUserData[1], arrayUserData[2], arrayUserData[3], Integer.parseInt(arrayUserData[4]));
+        return user;
+    }
+
     public User(String login, String password, String ip, int port) {
         this.login = login;
         this.password = password;

@@ -1,6 +1,13 @@
 package oleg.models;
 
 public class Message {
+    /**Метод, создающий экземпляр класса из строки*/
+    public static Message lineToNewObjectMessage(String line) {
+        String [] arrayMessageData = line.split(";");
+        Message newMessage = new Message(arrayMessageData[1], arrayMessageData[2], arrayMessageData[3], "Не отправлено");
+        return newMessage;
+    }
+
     public Message(String sender, String reciver, String text, String status) {
         this.sender = sender;
         this.reciver = reciver;
