@@ -9,6 +9,15 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class CredentialsFileManager {
+    //Паттерн Singleton
+    private static CredentialsFileManager INSTANCE;
+    private CredentialsFileManager() {}
+    public static CredentialsFileManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CredentialsFileManager();
+        }
+        return INSTANCE;
+    }
 
     /**Метод, создающий файл-БД с логинами и паролями*/
     private Path getCredentialsFileInstance() throws IOException {

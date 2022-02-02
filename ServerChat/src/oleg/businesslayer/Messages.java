@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Messages {
     /**Метод, размещающий сообщение пользователя в БД*/
     public boolean saveNewMessage(Message incomingMessage) {
-        MessagesFileManager mfm = new MessagesFileManager();
+        MessagesFileManager mfm = MessagesFileManager.getInstance();
         return mfm.createMessage(incomingMessage);
     }
 
@@ -23,8 +23,7 @@ public class Messages {
         try {
             socket = new Socket(message.getIpReciver(), message.getPortReciver());
             os = socket.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return;
         }
 
@@ -34,15 +33,18 @@ public class Messages {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MessagesFileManager mfm = new MessagesFileManager();
+        MessagesFileManager mfm = MessagesFileManager.getInstance();
         mfm.settingTheAttributeSent(message);
     }
 
     /**Метод, возвращающий ArrayList сообщений из БД с признаком "Не отправлено"*/
     public ArrayList<Message> checkNewMessages() {
-        MessagesFileManager mfm = new MessagesFileManager();
+        MessagesFileManager mfm = MessagesFileManager.getInstance();
         ArrayList <Message> listAllMesages = mfm.getAllMessagesFromDataBase();
         ArrayList<Message> listMessagesToSend = new ArrayList<>();
+        if(listAllMesages == null) {
+            return listMessagesToSend;
+        }
         for(Message messageLineToSend : listAllMesages) {
             if(messageLineToSend.getStatus().equals("Не отправлено")) {
                 listMessagesToSend.add(messageLineToSend);
@@ -53,7 +55,7 @@ public class Messages {
 
     /**Метод, добавляющий сообщениям к отправке с ip и port получателей сообщений*/
     public void searchIpAndPort(ArrayList<Message> listMessagesToBeSent) {
-        MessagesFileManager mfm = new MessagesFileManager();
+        MessagesFileManager mfm = MessagesFileManager.getInstance();
         for(Message messageToBeSent : listMessagesToBeSent) {
             String ipAndPort = mfm.getResiverIpAndPort(messageToBeSent);
             String [] ipPort = ipAndPort.split(";");

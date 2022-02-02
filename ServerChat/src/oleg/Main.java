@@ -39,6 +39,7 @@ public class Main {
                             }
                             break;
                         case ("autorisation"):
+                            //Кажется, использовал не тот метод
                             User notAnAuthorizedUser = User.lineToNewObjectUser(stringMessage);
                             Authentication autorisationManager = new Authentication();
                             if (autorisationManager.authorizeUser(notAnAuthorizedUser)) {

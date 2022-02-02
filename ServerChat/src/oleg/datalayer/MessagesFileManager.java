@@ -9,6 +9,16 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class MessagesFileManager {
+    //Паттерн Singleton
+    private static MessagesFileManager INSTANCE;
+    private MessagesFileManager() {}
+    public static MessagesFileManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MessagesFileManager();
+        }
+        return INSTANCE;
+    }
+
     /**Метод, создающий БД-файл с сообщениями*/
     private Path getMessageFileInstance() {
         Path file = Path.of("MessagesDataBase.txt");
@@ -40,6 +50,7 @@ public class MessagesFileManager {
             fr = new FileReader("MessagesDataBase.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return null;
         }
         BufferedReader br = new BufferedReader(fr);
 
