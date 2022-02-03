@@ -1,7 +1,6 @@
 package oleg.businesslayer;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
@@ -26,10 +25,10 @@ public class Messaging {
             is.read(response);
             String responseStr = new String(response, StandardCharsets.UTF_8);
             switch (responseStr) {
-                case ("202"): System.out.println("Сообщение доставлено");
+                case ("202"): System.out.println("Сообщение отправлено");
                     result = true;
                     break;
-                case ("402"): System.out.println("Сообщение не доставлено");
+                case ("402"): System.out.println("Сообщение не отправлено, повторите ввод");
                     break;
             }
         }

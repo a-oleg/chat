@@ -21,7 +21,7 @@ public class PostMan implements Runnable {
                 }
             }
             try {
-                sleep(10_000);
+                sleep(3_000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

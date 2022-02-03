@@ -45,7 +45,7 @@ public class MessagesFileManager {
 
     /**Метод, возвращающий ArrayList всех сообщений из БД*/
     public ArrayList<Message> getAllMessagesFromDataBase() {
-        FileReader fr = null;
+        FileReader fr;
         try {
             fr = new FileReader("MessagesDataBase.txt");
         } catch (FileNotFoundException e) {
@@ -72,6 +72,10 @@ public class MessagesFileManager {
         }
         try {
             fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             br.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,6 +134,17 @@ public class MessagesFileManager {
                 }
             }
         }
+        try {
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return ipAndPort;
     }
+
 }

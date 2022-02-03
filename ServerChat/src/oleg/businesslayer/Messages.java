@@ -2,7 +2,6 @@ package oleg.businesslayer;
 
 import oleg.datalayer.MessagesFileManager;
 import oleg.models.Message;
-import oleg.models.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,7 +15,7 @@ public class Messages {
         return mfm.createMessage(incomingMessage);
     }
 
-    /**Метод, отправляющий сообщения с сервера получателям*/
+    /**Метод, отправляющий сообщения с сервера получателям и проставляющий признак "Отправлено" в БД*/
     public void sendMessageToTheReciver(Message message) {
         Socket socket = null;
         OutputStream os = null;

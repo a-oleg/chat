@@ -39,7 +39,6 @@ public class Main {
                             }
                             break;
                         case ("autorisation"):
-                            //Кажется, использовал не тот метод
                             User notAnAuthorizedUser = User.lineToNewObjectUser(stringMessage);
                             Authentication autorisationManager = new Authentication();
                             if (autorisationManager.authorizeUser(notAnAuthorizedUser)) {
@@ -51,7 +50,6 @@ public class Main {
                             }
                             break;
                         case("outMessage"):
-                            //Возможно, в конструкторе нужно менять порт на 8000
                             Message incomingMessage = Message.lineToNewObjectMessage(stringMessage);
                             Messages saveMassageManager = new Messages();
                             if(saveMassageManager.saveNewMessage(incomingMessage)) {
