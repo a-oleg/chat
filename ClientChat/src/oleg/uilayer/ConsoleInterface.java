@@ -3,23 +3,19 @@ package oleg.uilayer;
 import oleg.ReciverMessage;
 import oleg.businesslayer.Authentication;
 import oleg.businesslayer.Messaging;
+import oleg.exceptions.ExitUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ConsoleInterface {
-    private static boolean isExit = false;
 
     /**Метод, реализующий диалог с клиентом: хочет он зарагестрироваться или авторизоваться*/
-    public void entryDialog() {
+    public void entryDialog() throws ExitUI {
         boolean invalidResult = true;
         do {
-            if(ConsoleInterface.isExit == true) {
-                break;
-            }
-
-            System.out.println("Для завершения работы введите \"Exit\" и нажмите Enter");
+            System.out.println("Для завершения работы введите \"Exit\" и нажмите \"Enter\"");
             System.out.println("Для регистрации нажмите \"R\", а для авторизации нажмите \"A\" и подтвердите ввод нажатием клавиши \"Enter\"");
             BufferedReader userChoice = new BufferedReader(new InputStreamReader(System.in));
             String userChoiceStr = null;
@@ -41,28 +37,29 @@ public class ConsoleInterface {
                     }
                     ReciverMessage reciverThread = new ReciverMessage();
                     new Thread(reciverThread).start();
-                    while (!isExit) {
-                            messagingDialog();
-                        }
+                    messagingDialog();
                     invalidResult = false;
                     break;
                 case ("exit"):
-                case ("Exit"): isExit(userChoiceStr);
-                    invalidResult = false;
-                break;
+                case ("Exit"): throw new ExitUI();
                 default: System.out.println("Неверный выбор. Нажмите \"R\" или \"A\" и подтвердите нажатием клавиши \"Enter\"");
                     break;
             }
         }
-        while (invalidResult && !isExit);
+        while (invalidResult);
         System.out.println("Программа завершена");
     }
 
     /**Метод, завершающий работу с программой при вводе в консоль слова "Exit"*/
     private boolean isExit(String userMessage) {
         if("Exit".equals(userMessage) || "exit".equals(userMessage)) {
-            return true;
-        } return false;
+            try {
+                throw new ExitUI();
+            } catch (ExitUI e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
     /**Метод, запрашивающий у клиента логин и пароль, в случае регистрации*/
@@ -74,19 +71,21 @@ public class ConsoleInterface {
             System.out.println("Для регистрации введите логин и нажмите \"Enter\"");
             login = registerLoginAndPassword.readLine();
             if(isExit(login)) {
-                isExit = true;
                 return false;
             }
             System.out.println("Для регистрации введите пароль и нажмите \"Enter\"");
             password = registerLoginAndPassword.readLine();
             if(isExit(password)) {
-                isExit = true;
                 return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        try {
+            registerLoginAndPassword.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Authentication registerManager = new Authentication();
         return registerManager.registerNewUser(login, password);
     }
@@ -107,6 +106,11 @@ public class ConsoleInterface {
         try {
             password = autorisationLoginAndPassword.readLine();
             isExit(password);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            autorisationLoginAndPassword.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,7 +136,17 @@ public class ConsoleInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            autorisationLoginAndPassword.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         isExit(textOfMessage);
+        try {
+            autorisationLoginAndPassword.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Messaging messageManager = new Messaging();
         return messageManager.outputMessage(nicknameOfReceiver, textOfMessage);
     }
