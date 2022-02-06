@@ -105,7 +105,7 @@ public class MessagesFileManager {
         }
     }
 
-    /**Метод, возвращающий IP и порт получателя сообщения по логину из БД*/
+    /**Метод, возвращающий IP и порт получателя сообщения*/
     public String getResiverIpAndPort(Message message) {
         FileReader fr = null;
         try {
@@ -127,7 +127,7 @@ public class MessagesFileManager {
             if(lineInDataBase == null) {
                 hasMoreLine = false;
             } else {
-                if(lineInDataBase.contains(message.getReciver())) {
+                if(lineInDataBase.contains(message.getReciver() + ";")) {
                     String [] credentialsLine = lineInDataBase.split(";");
                     ipAndPort = credentialsLine[2] + ";" + credentialsLine[3] + ";";
                     hasMoreLine = false;

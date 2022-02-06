@@ -3,7 +3,7 @@ package oleg.uilayer;
 import oleg.ReciverMessage;
 import oleg.businesslayer.Authentication;
 import oleg.businesslayer.Messaging;
-import oleg.exceptions.ExitUI;
+import oleg.exceptions.ExitCommandException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 public class ConsoleInterface {
 
     /**Метод, реализующий диалог с клиентом: хочет он зарагестрироваться или авторизоваться*/
-    public void entryDialog() throws ExitUI {
+    public void entryDialog() throws ExitCommandException {
         boolean invalidResult = true;
         do {
             System.out.println("Для завершения работы введите \"Exit\" и нажмите \"Enter\"");
@@ -41,21 +41,21 @@ public class ConsoleInterface {
                     invalidResult = false;
                     break;
                 case ("exit"):
-                case ("Exit"): throw new ExitUI();
+                case ("Exit"): throw new ExitCommandException();
                 default: System.out.println("Неверный выбор. Нажмите \"R\" или \"A\" и подтвердите нажатием клавиши \"Enter\"");
                     break;
             }
         }
         while (invalidResult);
-        System.out.println("Программа завершена");
+        System.out.println("Программа завершила работу");
     }
 
     /**Метод, завершающий работу с программой при вводе в консоль слова "Exit"*/
     private boolean isExit(String userMessage) {
         if("Exit".equals(userMessage) || "exit".equals(userMessage)) {
             try {
-                throw new ExitUI();
-            } catch (ExitUI e) {
+                throw new ExitCommandException();
+            } catch (ExitCommandException e) {
                 e.printStackTrace();
             }
         }
@@ -109,11 +109,13 @@ public class ConsoleInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        /*
         try {
             autorisationLoginAndPassword.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+         */
         Authentication authorizeManager = new Authentication();
         return authorizeManager.authorizeUser(login, password);
     }

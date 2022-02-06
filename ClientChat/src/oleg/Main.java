@@ -1,12 +1,19 @@
 package oleg;
 
-import oleg.exceptions.ExitUI;
+import oleg.exceptions.ExitCommandException;
 import oleg.uilayer.ConsoleInterface;
+
+import static java.lang.System.exit;
 
 public class Main {
 
-    public static void main(String[] args) throws ExitUI {
+    public static void main(String[] args) {
         ConsoleInterface consoleInterface = new ConsoleInterface();
-        consoleInterface.entryDialog();
+        try {
+            consoleInterface.entryDialog();
+        }
+        catch (ExitCommandException e) {
+            exit(0);
+        }
     }
 }
