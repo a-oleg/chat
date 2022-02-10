@@ -21,9 +21,9 @@ public class CredentialsFileManager {
 
     /**Метод, создающий файл-БД с логинами и паролями*/
     private Path getCredentialsFileInstance() throws IOException {
-        Path file = Path.of("ClientDataBase.txt");
+        Path file = Path.of("ServerChat/ClientDataBase.txt");
         if(!Files.exists(Path.of(String.valueOf(file)))) {
-            Files.createFile(Path.of("ClientDataBase.txt"));
+            Files.createFile(Path.of("ServerChat/ClientDataBase.txt"));
         }
         return file;
     }
@@ -47,7 +47,7 @@ public class CredentialsFileManager {
         if(user.getLogin() == null) {
             return null;
         }
-        Path path = Path.of("ClientDataBase.txt");
+        Path path = Path.of("ServerChat/ClientDataBase.txt");
         try {
             List<String> arrayCredentials = Files.readAllLines(path);
             for(String s : arrayCredentials) {
@@ -65,7 +65,7 @@ public class CredentialsFileManager {
 
     /**Метод, добавляющий в БД ip и порт пользователя*/
     public boolean updateIpAndPortInDataBase(String login, String ip, int port) {
-        Path file = Path.of("ClientDataBase.txt");
+        Path file = Path.of("ServerChat/ClientDataBase.txt");
         try {
             List<String> listCredentials = Files.readAllLines(file);
             for(int i = 0; i < listCredentials.size(); i++) {

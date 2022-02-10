@@ -21,10 +21,10 @@ public class MessagesFileManager {
 
     /**Метод, создающий БД-файл с сообщениями*/
     private Path getMessageFileInstance() {
-        Path file = Path.of("MessagesDataBase.txt");
+        Path file = Path.of("ServerChat/MessagesDataBase.txt");
         if(!Files.exists(Path.of(String.valueOf(file)))) {
             try {
-                Files.createFile(Path.of("MessagesDataBase.txt"));
+                Files.createFile(Path.of("ServerChat/MessagesDataBase.txt"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -47,7 +47,7 @@ public class MessagesFileManager {
     public ArrayList<Message> getAllMessagesFromDataBase() {
         FileReader fr;
         try {
-            fr = new FileReader("MessagesDataBase.txt");
+            fr = new FileReader("ServerChat/MessagesDataBase.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -93,7 +93,7 @@ public class MessagesFileManager {
             }
         }
 
-        Path file = Path.of("MessagesDataBase.txt");
+        Path file = Path.of("ServerChat/MessagesDataBase.txt");
         try {
             Files.delete(file);
         } catch (IOException e) {
@@ -109,7 +109,7 @@ public class MessagesFileManager {
     public String getResiverIpAndPort(Message message) {
         FileReader fr = null;
         try {
-            fr = new FileReader("ClientDataBase.txt");
+            fr = new FileReader("ServerChat/ClientDataBase.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
