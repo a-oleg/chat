@@ -109,13 +109,6 @@ public class ConsoleInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*
-        try {
-            autorisationLoginAndPassword.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-         */
         Authentication authorizeManager = new Authentication();
         return authorizeManager.authorizeUser(login, password);
     }
