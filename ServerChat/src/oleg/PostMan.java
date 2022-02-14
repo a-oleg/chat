@@ -16,7 +16,7 @@ public class PostMan implements Runnable {
             ArrayList<Message> listNewMessages = messagesManager.checkNewMessages();
             if(listNewMessages.size() != 0) {
                 messagesManager.searchIpAndPort(listNewMessages);
-                for(Message message : listNewMessages) {
+                for (Message message : listNewMessages) {
                     messagesManager.sendMessageToTheReciver(message);
                 }
             }
