@@ -47,7 +47,6 @@ public class Messaging {
             is.read(bytesServerMessage);
             String stringMessage = new String(bytesServerMessage, StandardCharsets.UTF_8);
             String[] stringServerMassage = stringMessage.split(";");
-            // [0] - отправитель, [1] - текст
             Calendar timeRecive = GregorianCalendar.getInstance();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             System.out.println(dateFormat.format(timeRecive.getTime())+ " Входящее сообщение от " + stringServerMassage[0] + ": " + stringServerMassage[1]);
